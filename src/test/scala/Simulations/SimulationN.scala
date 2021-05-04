@@ -52,7 +52,7 @@ class SimulationN extends Simulation {
 			 BP02_Jpetstore_Search.scn2.inject(nothingFor(2 minutes), rampUsers(2) during (1 minutes))
 	).maxDuration(10 minutes).protocols(httpProtocol)
 			 .assertions(
-				 global.responseTime.max.lt(10),
+				 global.responseTime.max.lt(100),
 				 forAll.failedRequests.count.lt(5),
 				 details("BP02_JPetStore_Search_T02_Login" / "Login_1").successfulRequests.percent.gt(90)
 			 )
