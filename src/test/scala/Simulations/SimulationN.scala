@@ -54,7 +54,7 @@ class SimulationN extends Simulation {
 			 .assertions(
 				 global.responseTime.max.lt(10),
 				 forAll.failedRequests.count.lt(5),
-				 details("Login_1").successfulRequests.percent.gt(90)
+				 details("BP02_JPetStore_Search_T02_Login" / "Login_1").successfulRequests.percent.gt(90)
 			 )
 
 	after{
