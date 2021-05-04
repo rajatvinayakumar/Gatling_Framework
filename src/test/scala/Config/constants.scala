@@ -3,12 +3,13 @@ package Config
 import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef.{csv, _}
 
-object constants {
+object  constants {
   val config = ConfigFactory.load("app.properties")
 
   //****************application details****************
 
   val pbaseurl =  config.getString("baseurl")
+  val isdebug =config.getString("isDebug").toBoolean
 
   //****************common thinktime - generic use ****************
   val pCThinkTime = config.getString("pausebetweenrequestsC").toInt

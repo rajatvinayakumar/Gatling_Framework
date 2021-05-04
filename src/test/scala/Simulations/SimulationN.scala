@@ -1,16 +1,26 @@
 package Simulations
+
 import Request._
 import Config._
 import io.gatling.core.structure.{ChainBuilder, ScenarioBuilder}
 import java.time.format.DateTimeFormatter
 import java.util.concurrent._
+
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import Scenario._
+
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
 class SimulationN extends Simulation {
+
+	before {
+		println("Simulation is about to start!")
+		Utils.debugInfo()
+	}
+
+
 
 	val httpProtocol = http
 		.baseUrl(constants.pbaseurl)
@@ -38,7 +48,16 @@ class SimulationN extends Simulation {
 	//----------------------------------------------------Load Test ------------------------------------------------------//
 
 	   setUp(
-			 BP01_Jpetstore_AddToCart.scn1.inject(nothingFor(1 minutes),rampUsers(1) during (1 minutes)),
-			 BP02_Jpetstore_Search.scn2.inject(nothingFor(2 minutes), rampUsers(1) during (1 minutes))
-	).maxDuration(5 minutes).protocols(httpProtocol)
+			 BP01_Jpetstore_AddToCart.scn1.inject(nothingFor(1 minutes),rampUsers(2) during (1 minutes)),
+			 BP02_Jpetstore_Search.scn2.inject(nothingFor(2 minutes), rampUsers(2) during (1 minutes))
+	).maxDuration(10 minutes).protocols(httpProtocol)
+			 .assertions(
+				 global.responseTime.max.lt(10),
+				 forAll.failedRequests.count.lt(5),
+				 details("Login_1").successfulRequests.percent.gt(90)
+			 )
+
+	after{
+		println("Simulation is finished")
+	}
 }
